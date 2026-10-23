@@ -138,6 +138,23 @@ dialog::backdrop { background: var(--scrim) }
 .tag.paid { background: var(--pend-bg); color: var(--pend) } .tag.free { background: var(--ok-bg); color: var(--ok) }
 .decide { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--amber); border-radius: 12px; padding: 16px; display: grid; gap: 10px }
 .decide h3 { font-size: 1.1rem } .decide p { margin: 0; color: var(--muted); font-size: .92rem; max-width: 80ch }
+.costs { display: grid; gap: 12px }
+.costs h3 { font-size: 1.1rem; margin-top: 6px }
+.cnote { margin: 0; color: var(--muted); font-size: .88rem; max-width: 90ch }
+.tbl { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px }
+.tbl table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 640px }
+.tbl th, .tbl td { text-align: left; padding: 9px 12px; border-top: 1px solid var(--line); vertical-align: top }
+.tbl thead th { border-top: 0; font: 700 .74rem var(--f-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.tbl tr.sum td { font-weight: 700; font-variant-numeric: tabular-nums }
+.tbl td:nth-child(n+2) { font-variant-numeric: tabular-nums }
+.rec { font: 600 .7rem var(--f-body); background: var(--ok-bg); color: var(--ok); padding: 1px 7px; border-radius: 999px; white-space: nowrap }
+.budget { display: flex; gap: 14px 24px; flex-wrap: wrap; align-items: center; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--ok); border-radius: 12px; padding: 16px }
+.budget > div { display: grid } .budget .big { font: 700 1.6rem var(--f-display) } .budget > div span:last-child { color: var(--muted); font-size: .9rem }
+.budget p { margin: 0; flex: 1 1 320px; font-size: .92rem }
+.opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px }
+.opt { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 6px; align-content: start }
+.opt h4 { margin: 0; font-size: 1rem } .opt p { margin: 0; color: var(--muted); font-size: .9rem } .opt b { font-size: .92rem }
+.opt.rec-opt { border-color: var(--ok); box-shadow: inset 0 0 0 1px var(--ok) }
 @media (max-width: 520px) { .lines li { flex-direction: column; gap: 4px } .lines .st { align-self: flex-start } }
 @media (prefers-reduced-motion: reduce) { .card { transition: none } .card:hover { transform: none } }
 </style>
@@ -242,11 +259,54 @@ dialog::backdrop { background: var(--scrim) }
         <p class="who-line"><b>Who:</b> IT</p>
       </article>
     </div>
+    <div class="costs">
+      <h3>Tools available and what they cost</h3>
+      <p class="cnote">Prices in US dollars, pay as you go, as published by each provider in October 2026. ₹ figures use ₹88 = US$1; check the current rate. Taxes (GST) are extra. Prices marked * come from recent third-party listings because the provider's page did not show the figure; confirm them on the provider's site before buying.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>For</th><th>Tool</th><th>Price</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3">AI text (item 1)</td><td><b>Anthropic Claude Sonnet 5.5</b> <span class="rec">Recommended</span></td><td>$2 in, $10 out per million tokens (a token is about ¾ of a word)</td><td>Strong at reading training documents and writing questions; 50% off for overnight batch jobs</td></tr>
+          <tr><td>Anthropic Claude Haiku 5.5</td><td>$0.10 in, $0.50 out per million tokens</td><td>Cheapest; good for short poster text</td></tr>
+          <tr><td>OpenAI GPT-5.5 (also on Azure OpenAI)</td><td>$5 in, $30 out per million tokens*</td><td>Alternative if the company prefers Microsoft Azure</td></tr>
+          <tr><td>AI pictures (item 2)</td><td><b>OpenAI GPT Image</b></td><td>About $0.01 (draft), $0.03–0.05 (standard), $0.13 (high quality) per picture*</td><td>Also available through Azure</td></tr>
+          <tr><td rowspan="4">Voices (item 3)</td><td><b>Microsoft Azure AI Speech</b> <span class="rec">Recommended</span></td><td>$15 per million characters*; first 0.5 million characters a month free</td><td>Has Tamil and Indian English voices; one hour of narration is about 50,000 characters</td></tr>
+          <tr><td>Google Cloud Text-to-Speech</td><td>$4 (WaveNet), $16 (Neural2), $30 (Chirp 3 HD*) per million characters; first 1–4 million free</td><td>Also has Tamil and Indian English voices</td></tr>
+          <tr><td>ElevenLabs</td><td>Creator $22, Pro $99, Scale $299 a month (121,000 / 600,000 / 1.8 million characters); yearly plans cost 10 months</td><td>The most natural, studio-like voices; fixed monthly plans</td></tr>
+          <tr><td>Windows "English (India)" voices</td><td>Free</td><td>Indian English only, installed on the server (item 4)</td></tr>
+          <tr><td>Email (item 4)</td><td>The company's Microsoft 365</td><td>Free with an existing mailbox; a new Business Basic licence is about ₹125–170 per user a month*</td><td>Only one sender mailbox is needed</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Expected use</h3>
+      <p class="cnote">Estimate for one training team: about 50 posters or flyers, 20 videos of around 3 minutes, and 40 documents turned into questions each month, with re-tries. "High" is three to five times that, to cover busy months.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Recommended tool</th><th>Low / month</th><th>Expected / month</th><th>High / month</th></tr></thead>
+        <tbody>
+          <tr><td>Claude Sonnet 5.5 (AI text)</td><td>$5</td><td>$9</td><td>$45</td></tr>
+          <tr><td>OpenAI GPT Image (AI pictures, optional)</td><td>$2</td><td>$8</td><td>$52</td></tr>
+          <tr><td>Azure AI Speech (voices)</td><td>$0 (free allowance)</td><td>$0 (free allowance)</td><td>$15</td></tr>
+          <tr class="sum"><td>Total per month</td><td>$7 (≈ ₹600)</td><td>$17 (≈ ₹1,500)</td><td>$112 (≈ ₹9,900)</td></tr>
+          <tr class="sum"><td>Total per year</td><td>$84 (≈ ₹7,400)</td><td>$204 (≈ ₹18,000)</td><td>$1,344 (≈ ₹1.18 lakh)</td></tr>
+        </tbody>
+      </table></div>
+      <p class="cnote">One-time: writing first questions for the existing 444 courses costs about $50–100 (≈ ₹4,400–8,800) with Claude Sonnet 5.5 as an overnight batch job.</p>
+
+      <div class="budget">
+        <div><span class="big">US$1,500 a year</span><span>≈ ₹1.32 lakh + GST</span></div>
+        <p><b>Suggested budget to allocate.</b> It covers the high estimate for all three services plus the one-time job. Expected spend is much lower, about $300 in the first year (≈ ₹26,400). Each provider lets us set a monthly spending limit, so the bill cannot go over what is approved.</p>
+      </div>
+      <div class="opts">
+        <div class="opt"><h4>Cheapest</h4><p>Claude Haiku 5.5 + free Azure voices, no AI pictures</p><b>under $5 a month · under $60 a year</b></div>
+        <div class="opt rec-opt"><h4>Recommended</h4><p>Claude Sonnet 5.5 + GPT Image + Azure voices (Tamil included)</p><b>≈ $17 a month expected · budget $1,500 a year</b></div>
+        <div class="opt"><h4>Premium voices</h4><p>Recommended, plus ElevenLabs Pro instead of Azure voices</p><b>+ $99 a month, or + $990 a year on the yearly plan (≈ ₹87,100)</b></div>
+      </div>
+      <p class="cnote">Not included: hosting the LMS itself, and the development time to connect these services.</p>
+    </div>
     <div class="decide">
       <h3>Decisions needed</h3>
       <ol>
-        <li>Approve a monthly budget for an AI text service (item 1), and say whether AI pictures are wanted (item 2).</li>
-        <li>Choose the AI provider.</li>
+        <li>Approve a budget: about US$1,500 a year (≈ ₹1.32 lakh + GST) for the recommended option, with monthly spending limits set at each provider.</li>
+        <li>Choose the AI provider (recommended: Anthropic Claude), and say whether AI pictures are wanted (item 2).</li>
         <li>Approve sending training content to that provider (with a check that it contains no patient data).</li>
         <li>Decide whether the free voices are enough, or a paid voice service is wanted for studio quality and Tamil (item 3).</li>
         <li>Ask IT for the mail settings and the Indian English voices (item 4).</li>
