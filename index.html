@@ -195,8 +195,9 @@ const GROUPS = [
   { name: "Classes and content", note: "Live sessions, lessons made from existing files, and shared exam questions.", items: [1, 9, 13] },
   { name: "Learners and exams", note: "What learners can do themselves, and how exams stay fair.", items: [6, 7, 8] },
   { name: "Managers, reports and access", note: "Who is behind, what the numbers say, and who can see what.", items: [10, 11, 14] },
+  { name: "Communication and video (new)", note: "Posters and messages for awareness campaigns, and video lessons made from slides.", items: [15, 16, 17] },
 ];
-const SHORTS = [{"n": 1, "id": "feature-01", "file": "videos/feature-01.mp4", "poster": "posters/feature-01.jpg", "title": "Online class with a waiting list", "who": "Trainers and learners", "why": "A full class fills itself again when someone cancels, and attending completes the course.", "len": "1:10"}, {"n": 2, "id": "feature-02", "file": "videos/feature-02.mp4", "poster": "posters/feature-02.jpg", "title": "New hires enrolled automatically", "who": "Training admin", "why": "Nobody has to remember to enrol a new joiner. It happens by itself.", "len": "1:25"}, {"n": 3, "id": "feature-03", "file": "videos/feature-03.mp4", "poster": "posters/feature-03.jpg", "title": "Yearly re-training", "who": "Training admin and learners", "why": "Compliance training renews itself every year, and the old result stays on record.", "len": "1:00"}, {"n": 4, "id": "feature-04", "file": "videos/feature-04.mp4", "poster": "posters/feature-04.jpg", "title": "Re-assign a completed course", "who": "Training admin", "why": "When a process changes, people take a course again and their earlier result is kept.", "len": "0:56"}, {"n": 5, "id": "feature-05", "file": "videos/feature-05.mp4", "poster": "posters/feature-05.jpg", "title": "Training plans learners join themselves", "who": "Training admin and learners", "why": "One plan bundles courses and whole paths, and the right people join in one click.", "len": "1:18"}, {"n": 6, "id": "feature-06", "file": "videos/feature-06.mp4", "poster": "posters/feature-06.jpg", "title": "Enrol yourself from the catalog", "who": "Every learner", "why": "People pick up extra training on their own, without asking an admin.", "len": "0:43"}, {"n": 7, "id": "feature-07", "file": "videos/feature-07.mp4", "poster": "posters/feature-07.jpg", "title": "New question types: match and put in order", "who": "Trainers and learners", "why": "Exams test real understanding, not just multiple choice.", "len": "1:53"}, {"n": 8, "id": "feature-08", "file": "videos/feature-08.mp4", "poster": "posters/feature-08.jpg", "title": "Exam safety: auto-save and time-out", "who": "Learners and trainers", "why": "A crash never loses an exam, and the time limit is enforced fairly.", "len": "1:05"}, {"n": 9, "id": "feature-09", "file": "videos/feature-09.mp4", "poster": "posters/feature-09.jpg", "title": "Lesson types: Word, video and listen", "who": "Trainers and learners", "why": "Trainers reuse the files they have; learners never download anything.", "len": "2:08"}, {"n": 10, "id": "feature-10", "file": "videos/feature-10.mp4", "poster": "posters/feature-10.jpg", "title": "Readiness: delayed courses and skill gaps", "who": "Managers and trainers", "why": "See early who is falling behind, and on which topics.", "len": "0:52"}, {"n": 11, "id": "feature-11", "file": "videos/feature-11.mp4", "poster": "posters/feature-11.jpg", "title": "Reports with filters", "who": "Training team and auditors", "why": "Answer questions like how is Team Beta doing this month, in seconds.", "len": "0:53"}, {"n": 12, "id": "feature-12", "file": "videos/feature-12.mp4", "poster": "posters/feature-12.jpg", "title": "Emails and reminder settings", "who": "Training admin", "why": "Every email uses your wording, and reminders follow your rules.", "len": "1:14"}, {"n": 13, "id": "feature-13", "file": "videos/feature-13.mp4", "poster": "posters/feature-13.jpg", "title": "Question bank: pick and share questions", "who": "Trainers", "why": "Good questions are written once and reused in many exams.", "len": "0:57"}, {"n": 14, "id": "feature-14", "file": "videos/feature-14.mp4", "poster": "posters/feature-14.jpg", "title": "Roles and access", "who": "Everyone", "why": "Each person sees only what their role allows; getting in is simple and safe.", "len": "1:26"}];
+const SHORTS = [{"n": 1, "id": "feature-01", "file": "videos/feature-01.mp4", "poster": "posters/feature-01.jpg", "title": "Online class with a waiting list", "who": "Trainers and learners", "why": "A full class fills itself again when someone cancels, and attending completes the course.", "len": "1:10"}, {"n": 2, "id": "feature-02", "file": "videos/feature-02.mp4", "poster": "posters/feature-02.jpg", "title": "New hires enrolled automatically", "who": "Training admin", "why": "Nobody has to remember to enrol a new joiner. It happens by itself.", "len": "1:25"}, {"n": 3, "id": "feature-03", "file": "videos/feature-03.mp4", "poster": "posters/feature-03.jpg", "title": "Yearly re-training", "who": "Training admin and learners", "why": "Compliance training renews itself every year, and the old result stays on record.", "len": "1:00"}, {"n": 4, "id": "feature-04", "file": "videos/feature-04.mp4", "poster": "posters/feature-04.jpg", "title": "Re-assign a completed course", "who": "Training admin", "why": "When a process changes, people take a course again and their earlier result is kept.", "len": "0:56"}, {"n": 5, "id": "feature-05", "file": "videos/feature-05.mp4", "poster": "posters/feature-05.jpg", "title": "Training plans learners join themselves", "who": "Training admin and learners", "why": "One plan bundles courses and whole paths, and the right people join in one click.", "len": "1:18"}, {"n": 6, "id": "feature-06", "file": "videos/feature-06.mp4", "poster": "posters/feature-06.jpg", "title": "Enrol yourself from the catalog", "who": "Every learner", "why": "People pick up extra training on their own, without asking an admin.", "len": "0:43"}, {"n": 7, "id": "feature-07", "file": "videos/feature-07.mp4", "poster": "posters/feature-07.jpg", "title": "New question types: match and put in order", "who": "Trainers and learners", "why": "Exams test real understanding, not just multiple choice.", "len": "1:53"}, {"n": 8, "id": "feature-08", "file": "videos/feature-08.mp4", "poster": "posters/feature-08.jpg", "title": "Exam safety: auto-save and time-out", "who": "Learners and trainers", "why": "A crash never loses an exam, and the time limit is enforced fairly.", "len": "1:05"}, {"n": 9, "id": "feature-09", "file": "videos/feature-09.mp4", "poster": "posters/feature-09.jpg", "title": "Lesson types: Word, video and listen", "who": "Trainers and learners", "why": "Trainers reuse the files they have; learners never download anything.", "len": "2:08"}, {"n": 10, "id": "feature-10", "file": "videos/feature-10.mp4", "poster": "posters/feature-10.jpg", "title": "Readiness: delayed courses and skill gaps", "who": "Managers and trainers", "why": "See early who is falling behind, and on which topics.", "len": "0:52"}, {"n": 11, "id": "feature-11", "file": "videos/feature-11.mp4", "poster": "posters/feature-11.jpg", "title": "Reports with filters", "who": "Training team and auditors", "why": "Answer questions like how is Team Beta doing this month, in seconds.", "len": "0:53"}, {"n": 12, "id": "feature-12", "file": "videos/feature-12.mp4", "poster": "posters/feature-12.jpg", "title": "Emails and reminder settings", "who": "Training admin", "why": "Every email uses your wording, and reminders follow your rules.", "len": "1:14"}, {"n": 13, "id": "feature-13", "file": "videos/feature-13.mp4", "poster": "posters/feature-13.jpg", "title": "Question bank: pick and share questions", "who": "Trainers", "why": "Good questions are written once and reused in many exams.", "len": "0:57"}, {"n": 14, "id": "feature-14", "file": "videos/feature-14.mp4", "poster": "posters/feature-14.jpg", "title": "Roles and access", "who": "Everyone", "why": "Each person sees only what their role allows; getting in is simple and safe.", "len": "1:26"}, {"n": 15, "id": "feature-15", "file": "videos/feature-15.mp4", "poster": "posters/feature-15.jpg", "title": "Posters and flyers", "who": "Training team", "why": "On-brand posters, flyers and knowledge bites in minutes, without a designer.", "len": "1:54"}, {"n": 16, "id": "feature-16", "file": "videos/feature-16.mp4", "poster": "posters/feature-16.jpg", "title": "Messages to groups, with tracking", "who": "Training team", "why": "The right message to the right people, now or on a schedule, with proof it was read.", "len": "1:59"}, {"n": 17, "id": "feature-17", "file": "videos/feature-17.mp4", "poster": "posters/feature-17.jpg", "title": "Turn slides into a video lesson", "who": "Trainers", "why": "Existing PowerPoint, PDF or Word training becomes a narrated video lesson, with free voices.", "len": "2:48"}];
 // The page's public link; each video adds its own #name.
 const SHARE_BASE = "https://redmouseindia.github.io/asprcm-university-walkthrough/";
 
@@ -318,54 +319,54 @@ d|Ability to define:
 d|Automatic scoring and result generation.
 d|Ability to generate learner scorecards and completion reports.` },
   { title: "3. AI-Powered Poster, Flyer and Communication Management", req: "The LMS should include AI-enabled communication capabilities to create awareness and learning campaigns.", lines: `
-p|AI-assisted creation of:|Planned for the AI phase
->p|Posters
->p|Flyers
->p|Teasers
->p|Educational Communication Materials
->p|Knowledge Bites
-p|Users should be able to provide:
->p|Topic
->p|Key Message
->p|Basic Content
->p|Branding Guidelines
-p|The AI engine should automatically generate:
->p|Design Layout
->p|Graphics
->p|Visual Content
->p|Communication-ready Posters/Flyers
-p|Ability to create distribution groups within the LMS.
-p|Ability to send generated content directly to:
->p|Employees
->p|Teams
->p|Departments
->p|Targeted User Groups
-p|Ability to schedule communication campaigns.
-p|Ability to track:
->p|Delivery Status
->p|View Rate
->p|Engagement Metrics` },
+x|AI-assisted creation of:|Made with ready templates and your brand kit; AI design pending
+>d|Posters
+>d|Flyers
+>d|Teasers
+>d|Educational Communication Materials|Sent as messages with the poster attached
+>d|Knowledge Bites
+d|Users should be able to provide:
+>d|Topic
+>d|Key Message
+>d|Basic Content
+>d|Branding Guidelines|Brand kit: colours, logo and footer
+x|The AI engine should automatically generate:|The app lays out the design itself; AI-drawn graphics pending
+>d|Design Layout|5 templates, text fitted automatically
+>p|Graphics|Needs AI; you can add your own picture
+>x|Visual Content|Your own picture or the template's shapes
+>d|Communication-ready Posters/Flyers|PNG and PDF
+d|Ability to create distribution groups within the LMS.
+d|Ability to send generated content directly to:
+>d|Employees
+>d|Teams
+>d|Departments
+>d|Targeted User Groups
+d|Ability to schedule communication campaigns.
+d|Ability to track:
+>d|Delivery Status
+>d|View Rate
+>d|Engagement Metrics|Link clicks` },
   { title: "4. AI-Based Content-to-Video Conversion", req: "The LMS should support automated conversion of learning content into video-based learning assets.", lines: `
-p|Ability to upload:|Planned for the AI phase (uploading itself is done in area 1)
->p|Word Documents
->p|PowerPoint Presentations
->p|PDFs
->p|Existing Learning Content
-p|AI engine should automatically convert content into:
->p|Training Videos
->p|Microlearning Videos
->p|Knowledge Bite Videos
-p|Ability to generate:
->p|Professional Voice-over
->p|Text-to-Speech Narration|A basic "Listen" button that reads lessons aloud is done
->p|Multiple Voice Options
-p|Ability to select:
->p|Language
->p|Accent
->p|Voice Profile
-p|Automatically generate video scenes based on content.
-p|Generated videos should be directly publishable within the LMS.
-p|Ability to edit generated videos before publishing.` },
+x|Ability to upload:|Done without AI: slides become narrated video scenes
+>d|Word Documents
+>d|PowerPoint Presentations|Speaker notes become the narration
+>d|PDFs
+>x|Existing Learning Content|Upload the same file again; picking an existing lesson pending
+x|AI engine should automatically convert content into:|Slide-by-slide videos; AI-written scripts pending
+>d|Training Videos
+>d|Microlearning Videos|Leave out scenes to make a short one
+>x|Knowledge Bite Videos|From a short deck; AI summarising pending
+x|Ability to generate:
+>x|Professional Voice-over|Free natural voices; studio-quality voices need a paid service
+>d|Text-to-Speech Narration
+>d|Multiple Voice Options
+d|Ability to select:
+>d|Language|English and Hindi
+>x|Accent|US and UK English; Indian English via Windows voices
+>d|Voice Profile|Male and female voices, speed
+d|Automatically generate video scenes based on content.|One scene per slide or page
+d|Generated videos should be directly publishable within the LMS.|Published as a video lesson
+d|Ability to edit generated videos before publishing.|Change words, order, leave out scenes` },
   { title: "5. AI-Based Assessment Generation", req: "The LMS should automatically generate assessment questions from uploaded training content.", lines: `
 p|Ability to analyze uploaded:|Planned for the AI phase
 >p|Word Documents
