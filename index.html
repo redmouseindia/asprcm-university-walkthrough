@@ -55,6 +55,7 @@ a { color: var(--teal) }
 .now dt { color: var(--stage-muted) }
 .now dd { margin: 0 }
 .parts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px }
+.parts-label { align-self: center; font-size: .85rem; color: var(--stage-muted) }
 .parts button { font: 600 .9rem var(--f-body); color: var(--stage-ink); background: transparent; border: 1px solid rgba(255,255,255,.28);
   border-radius: 999px; padding: 7px 14px; cursor: pointer }
 .parts button[aria-pressed="true"] { background: var(--stage-ink); color: var(--stage); border-color: var(--stage-ink) }
@@ -103,7 +104,7 @@ footer .wrap { padding-block: 0 40px; border-top: 1px solid var(--line); padding
           <dt>Why it matters</dt><dd id="why">One story that shows the whole training journey.</dd>
           <dt>Length</dt><dd id="len"></dd>
         </dl>
-        <div class="parts" id="parts" role="group" aria-label="Walkthrough parts"></div>
+        <div class="parts" id="parts" role="group" aria-label="Full walkthrough"><span class="parts-label">Full walkthrough:</span></div>
         <div class="share"><span>Link to this video:</span><button type="button" id="copy">Copy link</button><span id="copied" hidden>Copied</span>
           <input id="linkbox" readonly hidden aria-label="Link to this video" style="flex:1 1 100%;min-width:0;font:500 .8rem var(--f-mono);background:rgba(255,255,255,.08);color:var(--stage-ink);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:6px 8px"></div>
       </div>
@@ -125,6 +126,7 @@ const WALK = [
     len: "9:25", who: "Trainer, learner, manager and admin", why: "A classroom session, Ravi learns and passes, his manager signs him off, then records, reports and automation." },
 ];
 const GROUPS = [
+  { name: "Full walkthrough", note: "The whole story in two parts: Ravi from his first day to production ready.", items: ["part-1", "part-2"] },
   { name: "For the training admin", note: "Less manual work: enrolments, renewals and messages run themselves.", items: [2, 3, 4, 5, 12] },
   { name: "Classes and content", note: "Live sessions, lessons made from existing files, and shared exam questions.", items: [1, 9, 13] },
   { name: "Learners and exams", note: "What learners can do themselves, and how exams stay fair.", items: [6, 7, 8] },
@@ -170,15 +172,15 @@ GROUPS.forEach((g) => {
   sec.querySelector("h2").textContent = g.name; sec.querySelector("p").textContent = g.note;
   const grid = sec.querySelector(".grid");
   g.items.forEach((n) => {
-    const s = SHORTS.find((x) => x.n === n);
+    const s = typeof n === "string" ? byId[n] : SHORTS.find((x) => x.n === n);
     const c = document.createElement("button");
     c.type = "button"; c.className = "card"; c.dataset.id = s.id;
     c.innerHTML = `<div class="thumb"><img alt="" loading="lazy"><span class="num"></span><span class="dur"></span></div>
       <div class="card-body"><h3></h3><p></p><span class="who"></span></div>`;
     c.querySelector("img").src = s.poster;
-    c.querySelector(".num").textContent = "Feature " + s.n;
+    c.querySelector(".num").textContent = s.n ? "Feature " + s.n : s.title.split(" · ")[0];
     c.querySelector(".dur").textContent = s.len;
-    c.querySelector("h3").textContent = s.title;
+    c.querySelector("h3").textContent = s.n ? s.title : s.title.split(" · ")[1];
     c.querySelector("p").textContent = s.why;
     c.querySelector(".who").textContent = s.who;
     c.addEventListener("click", () => { select(s.id, true); window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); });
