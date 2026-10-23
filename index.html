@@ -126,6 +126,18 @@ dialog::backdrop { background: var(--scrim) }
 .lines .note b { font-weight: 700 } .lines .note.done b { color: var(--ok) } .lines .note.pending b { color: var(--pend) } .lines .note.why b { color: var(--ink) }
 .lines .st { flex: none }
 .email-note { margin: 0; color: var(--muted); font-size: .88rem }
+.need-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 14px }
+.need { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 8px; align-content: start }
+.need-top { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; flex-wrap: wrap }
+.need h3 { font-size: 1.08rem }
+.need h4 { margin: 4px 0 0; font: 700 .76rem var(--f-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.need ul, .decide ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: .92rem }
+.need .lead, .need .who-line, .need .free-alt { margin: 0; font-size: .92rem }
+.need .lead { color: var(--muted) } .need .free-alt { color: var(--muted); font-style: italic }
+.tag { font: 600 .74rem var(--f-body); padding: 2px 9px; border-radius: 999px; white-space: nowrap }
+.tag.paid { background: var(--pend-bg); color: var(--pend) } .tag.free { background: var(--ok-bg); color: var(--ok) }
+.decide { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--amber); border-radius: 12px; padding: 16px; display: grid; gap: 10px }
+.decide h3 { font-size: 1.1rem } .decide p { margin: 0; color: var(--muted); font-size: .92rem; max-width: 80ch }
 @media (max-width: 520px) { .lines li { flex-direction: column; gap: 4px } .lines .st { align-self: flex-start } }
 @media (prefers-reduced-motion: reduce) { .card { transition: none } .card:hover { transform: none } }
 </style>
@@ -138,6 +150,7 @@ dialog::backdrop { background: var(--scrim) }
     <div class="links">
       <button type="button" class="start" id="start">Watch the full walkthrough</button>
       <a class="ghost" href="#status">What's done and pending</a>
+      <a class="ghost" href="#needed">What's needed to finish</a>
     </div>
   </div>
 </header>
@@ -155,6 +168,91 @@ dialog::backdrop { background: var(--scrim) }
     </div>
     <div id="areas" style="display:grid;gap:12px"></div>
     <p class="email-note">Emails (notifications, reminders, scheduled reports) are created and listed in the system now; they are delivered once the company's Microsoft 365 or SMTP mail settings are entered.</p>
+  </div>
+</section>
+
+<section class="status needs" id="needed" aria-labelledby="needed-title">
+  <div class="wrap">
+    <div class="status-head">
+      <h2 id="needed-title">What is needed to finish the pending items</h2>
+      <p>Everything that could be built at no cost is built. What is left needs a paid service, an approval, or a setting from IT. Each item below lists what it would complete, and what it needs.</p>
+    </div>
+    <div class="need-grid">
+      <article class="need">
+        <div class="need-top"><h3>1. An AI service for text</h3><span class="tag paid">Paid · usage based</span></div>
+        <p class="lead">This one service completes most of the pending lines.</p>
+        <h4>It completes</h4>
+        <ul>
+          <li>AI writing the text of posters, flyers, teasers and knowledge bites, and suggesting the layout (area 3)</li>
+          <li>AI writing video scripts, summarising long content, and picking the key points for knowledge-bite videos (area 4)</li>
+          <li>AI questions written from Word, PDF and PowerPoint files, and question banks filled automatically (area 5)</li>
+        </ul>
+        <h4>It needs</h4>
+        <ul>
+          <li>A choice of provider, for example Anthropic Claude or Azure OpenAI</li>
+          <li>A company account with billing, and a monthly usage budget</li>
+          <li>An API key, kept on the server only</li>
+          <li>Approval to send training content to that provider. The content sent must not contain patient data, and compliance may require a data agreement with the provider</li>
+        </ul>
+        <p class="who-line"><b>Who:</b> management (budget and approval), IT (account and key)</p>
+      </article>
+      <article class="need">
+        <div class="need-top"><h3>2. An AI image service</h3><span class="tag paid">Paid · per picture</span></div>
+        <p class="lead">Only needed if pictures should be drawn by AI.</p>
+        <h4>It completes</h4>
+        <ul>
+          <li>AI-drawn graphics and pictures for posters and flyers (area 3: Graphics, Visual Content)</li>
+        </ul>
+        <h4>It needs</h4>
+        <ul>
+          <li>An image service, often from the same provider as item 1</li>
+          <li>A budget per picture, and the same approval as item 1</li>
+        </ul>
+        <p class="who-line"><b>Who:</b> management, IT</p>
+        <p class="free-alt">Without it, admins add their own pictures, as they can today.</p>
+      </article>
+      <article class="need">
+        <div class="need-top"><h3>3. A paid voice service</h3><span class="tag paid">Paid · per minute of audio</span></div>
+        <p class="lead">Only needed if the free voices are not good enough.</p>
+        <h4>It completes</h4>
+        <ul>
+          <li>Studio-quality professional voice-over (area 4)</li>
+          <li>A Tamil voice (area 4: Accent)</li>
+        </ul>
+        <h4>It needs</h4>
+        <ul>
+          <li>A voice provider, for example Azure Speech, Google Cloud Text-to-Speech or ElevenLabs</li>
+          <li>An account, an API key and a budget per minute of audio</li>
+        </ul>
+        <p class="who-line"><b>Who:</b> management, IT</p>
+      </article>
+      <article class="need">
+        <div class="need-top"><h3>4. Settings from IT</h3><span class="tag free">No cost</span></div>
+        <p class="lead">Small jobs on the server, no budget needed.</p>
+        <h4>It completes</h4>
+        <ul>
+          <li>Indian English narration voices (area 4: Accent)</li>
+          <li>Emails actually delivered: notifications, reminders, messages and scheduled reports (areas 3 and 8)</li>
+        </ul>
+        <h4>It needs</h4>
+        <ul>
+          <li>"English (India)" speech voices added in Windows Settings on the server; they then appear in the voice list by themselves</li>
+          <li>The company's Microsoft 365 or SMTP mail settings and a sender mailbox, entered in Admin › Email</li>
+        </ul>
+        <p class="who-line"><b>Who:</b> IT</p>
+      </article>
+    </div>
+    <div class="decide">
+      <h3>Decisions needed</h3>
+      <ol>
+        <li>Approve a monthly budget for an AI text service (item 1), and say whether AI pictures are wanted (item 2).</li>
+        <li>Choose the AI provider.</li>
+        <li>Approve sending training content to that provider (with a check that it contains no patient data).</li>
+        <li>Decide whether the free voices are enough, or a paid voice service is wanted for studio quality and Tamil (item 3).</li>
+        <li>Ask IT for the mail settings and the Indian English voices (item 4).</li>
+      </ol>
+      <p>Once a provider and key are in place, the AI features plug into screens that already exist: the poster editor, the video scene editor, and the question review and approval steps. AI only makes drafts; a person reviews and approves them before anything is published.</p>
+    </div>
   </div>
 </section>
 
