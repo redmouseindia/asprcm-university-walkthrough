@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: a programme of video cards (full walkthrough first, then shorts by audience); each card opens a screening popup. */
+/* Layout: a programme of video cards (a new hire's journey first, then shorts by audience); each card opens a screening popup. */
 :root {
   --bg: #f3f6fa; --surface: #ffffff; --ink: #14223a; --muted: #5a6880; --line: #dbe3ee;
   --stage: #0f2747; --stage-ink: #eef3fa; --stage-muted: #a9b8cf;
@@ -163,9 +163,9 @@ dialog::backdrop { background: var(--scrim) }
   <div class="wrap">
     <div class="brand"><b>ASP RCM University</b><span>Walkthrough videos</span></div>
     <h1>See the new learning portal in action</h1>
-    <p>Start with the full walkthrough: one new hire, Ravi, goes from his first day to production ready. Then pick any short below to see one feature in about a minute.</p>
+    <p>Start with a new hire's journey: Ravi goes from his first day to production ready. Then pick any short below to see one feature in about a minute.</p>
     <div class="links">
-      <button type="button" class="start" id="start">Watch the full walkthrough</button>
+      <button type="button" class="start" id="start">Watch a new hire's journey</button>
       <a class="ghost" href="#status">What's done and pending</a>
       <a class="ghost" href="#needed">What's needed to finish</a>
     </div>
@@ -349,7 +349,7 @@ const WALK = [
     len: "9:25", who: "Trainer, learner, manager and admin", why: "A classroom session, Ravi learns and passes, his manager signs him off, then records, reports and automation." },
 ];
 const GROUPS = [
-  { name: "Full walkthrough", note: "The whole story in two parts: Ravi from his first day to production ready.", items: ["part-1", "part-2"], wide: true },
+  { name: "A new hire's journey", note: "Follow Ravi from his first day to production ready, in two parts. The feature shorts below show what this story doesn't cover.", items: ["part-1", "part-2"], wide: true },
   { name: "For the training admin", note: "Less manual work: enrolments, renewals and messages run themselves.", items: [2, 3, 4, 5, 12] },
   { name: "Classes and content", note: "Live sessions, lessons made from existing files, and shared exam questions.", items: [1, 9, 13] },
   { name: "Learners and exams", note: "What learners can do themselves, and how exams stay fair.", items: [6, 7, 8] },
@@ -362,7 +362,7 @@ const SHARE_BASE = "https://redmouseindia.github.io/asprcm-university-walkthroug
 
 const $ = (id) => document.getElementById(id);
 const byId = {};
-WALK.forEach((w) => (byId[w.id] = { ...w, kicker: "Full walkthrough", label: w.title.split(" · ")[0], heading: w.title.split(" · ")[1] }));
+WALK.forEach((w) => (byId[w.id] = { ...w, kicker: "A new hire's journey", label: w.title.split(" · ")[0], heading: w.title.split(" · ")[1] }));
 SHORTS.forEach((s) => (byId[s.id] = { ...s, kicker: `Feature ${s.n}`, label: `Feature ${s.n}`, heading: s.title }));
 const ORDER = GROUPS.flatMap((g) => g.items.map((n) => (typeof n === "string" ? n : `feature-${String(n).padStart(2, "0")}`)));
 
