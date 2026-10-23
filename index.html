@@ -18,6 +18,7 @@
   --bg: #f3f6fa; --surface: #ffffff; --ink: #14223a; --muted: #5a6880; --line: #dbe3ee;
   --stage: #0f2747; --stage-ink: #eef3fa; --stage-muted: #a9b8cf;
   --teal: #0e8f8a; --amber: #e8a317; --chip: #e6f3f2; --chip-ink: #0b6e6a; --scrim: rgba(6, 12, 24, .78);
+  --ok: #157347; --ok-bg: #e3f4ea; --pend: #8a5a00; --pend-bg: #fdf1d8; --part: #1f5fa8; --part-bg: #e4eefa;
   --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
@@ -25,11 +26,13 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0b1424; --surface: #121e33; --ink: #e6ecf6; --muted: #9aa9c2; --line: #24344f;
   --stage: #08111f; --stage-ink: #eef3fa; --stage-muted: #9fb0ca;
-  --teal: #3cc7bf; --amber: #f2b93a; --chip: #123634; --chip-ink: #7fe0d9; --scrim: rgba(0, 0, 0, .8); color-scheme: dark } }
+  --teal: #3cc7bf; --amber: #f2b93a; --chip: #123634; --chip-ink: #7fe0d9; --scrim: rgba(0, 0, 0, .8);
+  --ok: #6fd69c; --ok-bg: #12301f; --pend: #f2c062; --pend-bg: #34280f; --part: #8ab8f0; --part-bg: #142a45; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0b1424; --surface: #121e33; --ink: #e6ecf6; --muted: #9aa9c2; --line: #24344f;
   --stage: #08111f; --stage-ink: #eef3fa; --stage-muted: #9fb0ca;
-  --teal: #3cc7bf; --amber: #f2b93a; --chip: #123634; --chip-ink: #7fe0d9; --scrim: rgba(0, 0, 0, .8); color-scheme: dark }
+  --teal: #3cc7bf; --amber: #f2b93a; --chip: #123634; --chip-ink: #7fe0d9; --scrim: rgba(0, 0, 0, .8);
+  --ok: #6fd69c; --ok-bg: #12301f; --pend: #f2c062; --pend-bg: #34280f; --part: #8ab8f0; --part-bg: #142a45; color-scheme: dark }
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--f-body) }
 .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
@@ -94,6 +97,35 @@ dialog::backdrop { background: var(--scrim) }
 .actions button.next { background: var(--amber); color: var(--stage) }
 .actions button:hover { filter: brightness(1.1) }
 #linkbox { flex: 1 1 100%; min-width: 0; font: 500 .8rem var(--f-mono); background: rgba(255,255,255,.08); color: var(--stage-ink); border: 1px solid rgba(255,255,255,.2); border-radius: 6px; padding: 6px 8px }
+/* Requirements status */
+.links { display: flex; gap: 10px; flex-wrap: wrap }
+.ghost { font: 600 1rem var(--f-body); color: var(--stage-ink); background: transparent; border: 1px solid rgba(255,255,255,.35); border-radius: 999px;
+  padding: 10px 18px; text-decoration: none; display: inline-flex; align-items: center }
+.status .wrap { padding-block: 8px 48px; display: grid; gap: 16px }
+.status-head { display: grid; gap: 6px; border-bottom: 1px solid var(--line); padding-bottom: 10px }
+.status-head h2 { font-size: 1.5rem }
+.status-head p { margin: 0; color: var(--muted); max-width: 70ch }
+.summary { display: flex; gap: 10px; flex-wrap: wrap }
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 600 .78rem var(--f-body); padding: 3px 10px; border-radius: 999px; white-space: nowrap }
+.pill.done { background: var(--ok-bg); color: var(--ok) } .pill.pending { background: var(--pend-bg); color: var(--pend) } .pill.partly { background: var(--part-bg); color: var(--part) }
+.pill.big { font-size: .9rem; padding: 6px 14px }
+.area { background: var(--surface); border: 1px solid var(--line); border-radius: 12px }
+.area summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px }
+.area summary::-webkit-details-marker { display: none }
+.area summary::before { content: "+"; font: 600 1.1rem var(--f-mono); color: var(--muted); width: 1ch }
+.area[open] summary::before { content: "−" }
+.area summary h3 { font-size: 1.05rem; flex: 1 1 260px; min-width: 0 }
+.area-body { padding: 0 16px 16px; display: grid; gap: 10px }
+.area-body .req { margin: 0; color: var(--muted); font-size: .92rem }
+.lines { list-style: none; margin: 0; padding: 0; display: grid }
+.lines li { display: flex; gap: 12px; justify-content: space-between; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); font-size: .94rem }
+.lines li.sub { padding-left: 22px; color: var(--ink) }
+.lines li.sub::before { content: "–"; color: var(--muted); margin-left: -14px; margin-right: 6px }
+.lines .txt { min-width: 0 }
+.lines .note { display: block; color: var(--muted); font-size: .82rem }
+.lines .st { flex: none }
+.email-note { margin: 0; color: var(--muted); font-size: .88rem }
+@media (max-width: 520px) { .lines li { flex-direction: column; gap: 4px } .lines .st { align-self: flex-start } }
 @media (prefers-reduced-motion: reduce) { .card { transition: none } .card:hover { transform: none } }
 </style>
 
@@ -102,13 +134,28 @@ dialog::backdrop { background: var(--scrim) }
     <div class="brand"><b>ASP RCM University</b><span>Walkthrough videos</span></div>
     <h1>See the new learning portal in action</h1>
     <p>Start with the full walkthrough: one new hire, Ravi, goes from his first day to production ready. Then pick any short below to see one feature in about a minute.</p>
-    <button type="button" class="start" id="start">Watch the full walkthrough</button>
+    <div class="links">
+      <button type="button" class="start" id="start">Watch the full walkthrough</button>
+      <a class="ghost" href="#status">What's done and pending</a>
+    </div>
   </div>
 </header>
 
 <main>
   <div class="wrap" id="programme"></div>
 </main>
+
+<section class="status" id="status" aria-labelledby="status-title">
+  <div class="wrap">
+    <div class="status-head">
+      <h2 id="status-title">Requirements status</h2>
+      <p>Each line of the LMS requirements, with what is done and what is pending. Open an area to see its lines.</p>
+      <div class="summary" id="summary"></div>
+    </div>
+    <div id="areas" style="display:grid;gap:12px"></div>
+    <p class="email-note">Emails (notifications, reminders, scheduled reports) are created and listed in the system now; they are delivered once the company's Microsoft 365 or SMTP mail settings are entered.</p>
+  </div>
+</section>
 
 <footer><div class="wrap">Recorded on the ASP RCM University demo system with sample people and courses. AI features are not shown; they are the next phase.</div></footer>
 
@@ -228,6 +275,200 @@ $("copy").addEventListener("click", () => {
   try { navigator.clipboard.writeText(url).then(done).catch(() => { box.focus(); box.select(); }); }
   catch (e) { box.focus(); box.select(); }
 });
+
+// ---- requirements status. Each line: [sub-line?] status | requirement text | optional note.
+// status: d = done, p = pending, x = partly done. A leading ">" marks a sub-line.
+const REQ = [
+  { title: "1. Content Hosting and Learning Path Management", req: "The LMS should provide the capability to host and manage multiple types of learning content within structured learning journeys.", lines: `
+d|Ability to upload and host learning materials in various formats, including:
+>d|Microsoft Word Documents (.doc/.docx)
+>d|PowerPoint Presentations (.ppt/.pptx)
+>d|PDF Documents
+>d|Videos
+>d|Images and Infographics
+d|Ability to organize content into:
+>d|Learning Paths
+>d|Training Plans
+>d|Courses
+>d|Modules|As lessons inside a course
+d|Ability to define the learning sequence for learners.
+d|Ability to control content access based on:
+>d|User Role
+>d|Team
+>d|Department
+>d|Location
+d|Support for tracking learner progress through each training module.` },
+  { title: "2. Assessment and Knowledge Validation", req: "The LMS should support creation and management of assessments throughout the learning journey.", lines: `
+d|Ability to place assessments:
+>d|Before training (Pre-Assessment)
+>d|During training (Knowledge Checks)
+>d|After training (Final Assessment)
+d|Ability to create and configure multiple question types, including:
+>d|Multiple Choice Questions (MCQ)
+>d|Multiple Select Questions (MMCQ)
+>d|Match the Following
+>d|True/False
+>d|Fill in the Blanks (Optional)
+>d|Scenario-Based Questions (Optional)
+d|Ability to define:
+>d|Passing Scores
+>d|Assessment Attempts
+>d|Time Limits
+>d|Randomized Questions
+d|Automatic scoring and result generation.
+d|Ability to generate learner scorecards and completion reports.` },
+  { title: "3. AI-Powered Poster, Flyer and Communication Management", req: "The LMS should include AI-enabled communication capabilities to create awareness and learning campaigns.", lines: `
+p|AI-assisted creation of:|Planned for the AI phase
+>p|Posters
+>p|Flyers
+>p|Teasers
+>p|Educational Communication Materials
+>p|Knowledge Bites
+p|Users should be able to provide:
+>p|Topic
+>p|Key Message
+>p|Basic Content
+>p|Branding Guidelines
+p|The AI engine should automatically generate:
+>p|Design Layout
+>p|Graphics
+>p|Visual Content
+>p|Communication-ready Posters/Flyers
+p|Ability to create distribution groups within the LMS.
+p|Ability to send generated content directly to:
+>p|Employees
+>p|Teams
+>p|Departments
+>p|Targeted User Groups
+p|Ability to schedule communication campaigns.
+p|Ability to track:
+>p|Delivery Status
+>p|View Rate
+>p|Engagement Metrics` },
+  { title: "4. AI-Based Content-to-Video Conversion", req: "The LMS should support automated conversion of learning content into video-based learning assets.", lines: `
+p|Ability to upload:|Planned for the AI phase (uploading itself is done in area 1)
+>p|Word Documents
+>p|PowerPoint Presentations
+>p|PDFs
+>p|Existing Learning Content
+p|AI engine should automatically convert content into:
+>p|Training Videos
+>p|Microlearning Videos
+>p|Knowledge Bite Videos
+p|Ability to generate:
+>p|Professional Voice-over
+>p|Text-to-Speech Narration|A basic "Listen" button that reads lessons aloud is done
+>p|Multiple Voice Options
+p|Ability to select:
+>p|Language
+>p|Accent
+>p|Voice Profile
+p|Automatically generate video scenes based on content.
+p|Generated videos should be directly publishable within the LMS.
+p|Ability to edit generated videos before publishing.` },
+  { title: "5. AI-Based Assessment Generation", req: "The LMS should automatically generate assessment questions from uploaded training content.", lines: `
+p|Ability to analyze uploaded:|Planned for the AI phase
+>p|Word Documents
+>p|PDFs
+>p|PowerPoint Presentations
+>p|Videos
+p|AI engine should generate assessments automatically.
+x|Supported question formats:|Done for questions written by trainers; AI generation pending
+>d|MCQ|Manual
+>d|MMCQ|Manual
+>d|Match the Following|Manual
+>d|True/False|Manual
+>d|Scenario-Based Questions|Manual
+d|Ability for trainers to:
+>d|Review Generated Questions|Draft and approve workflow
+>d|Edit Questions
+>d|Approve Questions
+>d|Add Additional Questions
+x|Automatic creation of question banks.|Question banks done; creation by AI pending
+d|Ability to categorize questions based on:
+>d|Difficulty Level
+>d|Topic
+>d|Module
+>d|Learning Objective` },
+  { title: "6. Training Records and Data Management", req: "The LMS should act as a centralized repository for all employee training records and learning history.", lines: `
+d|Maintain complete learner training history.
+d|Store details including:
+>d|Employee Information
+>d|Course Enrollments
+>d|Training Completion Status
+>d|Assessment Scores
+>d|Certification Status
+>d|Trainer Information
+>d|Training Dates
+>d|Attendance Records
+d|Maintain historical data for audit and compliance purposes.
+d|Data should be searchable and retrievable at any time.
+d|Support document retention policies.` },
+  { title: "7. Ramp and Performance Tracking", req: "The LMS should support tracking of employee ramp-up and learning effectiveness.", lines: `
+d|Define ramp-up milestones for employees.
+d|Track:
+>d|New Hire Training Progress
+>d|Nesting Progress
+>d|Production Readiness Status
+>d|Certification Completion
+>d|Learning Completion Percentage
+d|Manager dashboard to monitor team readiness.
+d|Ability to identify:
+>d|At-Risk Learners
+>d|Delayed Completions
+>d|Skill Gaps
+d|Ability to generate readiness and ramp reports.` },
+  { title: "8. Reporting and Analytics", req: "The LMS should provide comprehensive reporting capabilities.", lines: `
+d|Real-time dashboards.
+d|Standard reports:
+>d|Training Completion Report
+>d|Assessment Score Report
+>d|Certification Report
+>d|Attendance Report
+>d|Trainer Effectiveness Report
+>d|Learning Consumption Report
+>d|Ramp Status Report
+d|Ability to generate reports on demand.
+d|Export reports in:
+>d|Excel
+>d|PDF
+>d|CSV
+d|Support scheduled report distribution through email.|Sent once company mail settings are entered` },
+];
+const LABEL = { d: ["done", "Done"], p: ["pending", "Pending"], x: ["partly", "Partly done"] };
+const pill = (code, big) => { const s = document.createElement("span"); s.className = `pill ${LABEL[code][0]}${big ? " big" : ""}`; s.textContent = LABEL[code][1]; return s; };
+let areasDone = 0, areasPending = 0, areasPartly = 0;
+REQ.forEach((a) => {
+  const rows = a.lines.trim().split("\n").map((l) => {
+    const sub = l.startsWith(">"); const [st, text, note] = l.replace(/^>/, "").split("|");
+    return { sub, st, text, note };
+  });
+  const codes = new Set(rows.map((r) => r.st));
+  const overall = codes.size === 1 ? [...codes][0] : codes.has("d") ? "x" : "p";
+  if (overall === "d") areasDone++; else if (overall === "p") areasPending++; else areasPartly++;
+  const det = document.createElement("details"); det.className = "area";
+  const sum = document.createElement("summary");
+  const h = document.createElement("h3"); h.textContent = a.title;
+  sum.append(h, pill(overall));
+  const body = document.createElement("div"); body.className = "area-body";
+  const req = document.createElement("p"); req.className = "req"; req.textContent = a.req;
+  const ul = document.createElement("ul"); ul.className = "lines";
+  rows.forEach((r) => {
+    const li = document.createElement("li"); if (r.sub) li.className = "sub";
+    const t = document.createElement("span"); t.className = "txt"; t.textContent = r.text;
+    if (r.note) { const n = document.createElement("span"); n.className = "note"; n.textContent = r.note; t.appendChild(n); }
+    const st = pill(r.st); st.classList.add("st");
+    li.append(t, st); ul.appendChild(li);
+  });
+  body.append(req, ul); det.append(sum, body);
+  $("areas").appendChild(det);
+});
+const summary = $("summary");
+[["d", `${areasDone} of 8 areas done`], ["x", `${areasPartly} partly done`], ["p", `${areasPending} pending (AI phase)`]].forEach(([c, t]) => {
+  const p = pill(c, true); p.textContent = t; summary.appendChild(p);
+});
+// Opening the page at #status jumps to this section.
+if (location.hash === "#status") setTimeout(() => $("status").scrollIntoView(), 50);
 
 // A link to one video opens its popup, ready to play.
 const want = (location.hash || "").slice(1);
