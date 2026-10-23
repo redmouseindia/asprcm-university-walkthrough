@@ -123,6 +123,7 @@ dialog::backdrop { background: var(--scrim) }
 .lines li.sub .txt::before { content: "–"; color: var(--muted); margin-left: -14px; margin-right: 6px }
 .lines .txt { flex: 1 1 auto; min-width: 0 }
 .lines .note { display: block; color: var(--muted); font-size: .82rem }
+.lines .note b { font-weight: 700 } .lines .note.done b { color: var(--ok) } .lines .note.pending b { color: var(--pend) } .lines .note.why b { color: var(--ink) }
 .lines .st { flex: none }
 .email-note { margin: 0; color: var(--muted); font-size: .88rem }
 @media (max-width: 520px) { .lines li { flex-direction: column; gap: 4px } .lines .st { align-self: flex-start } }
@@ -149,7 +150,7 @@ dialog::backdrop { background: var(--scrim) }
   <div class="wrap">
     <div class="status-head">
       <h2 id="status-title">Requirements status</h2>
-      <p>Each line of the LMS requirements, with what is done and what is pending. Open an area to see its lines.</p>
+      <p>Each line of the LMS requirements, with what is done and what is pending. Every line marked Partly done or Pending says what is still pending and why. Open an area to see its lines.</p>
       <div class="summary" id="summary"></div>
     </div>
     <div id="areas" style="display:grid;gap:12px"></div>
@@ -277,7 +278,7 @@ $("copy").addEventListener("click", () => {
   catch (e) { box.focus(); box.select(); }
 });
 
-// ---- requirements status. Each line: [sub-line?] status | requirement text | optional note.
+// ---- requirements status. Each line: [sub-line?] status | requirement text | optional note, or labelled parts done=â€¦ | pending=â€¦ | why=â€¦
 // status: d = done, p = pending, x = partly done. A leading ">" marks a sub-line.
 const REQ = [
   { title: "1. Content Hosting and Learning Path Management", req: "The LMS should provide the capability to host and manage multiple types of learning content within structured learning journeys.", lines: `
@@ -319,22 +320,22 @@ d|Ability to define:
 d|Automatic scoring and result generation.
 d|Ability to generate learner scorecards and completion reports.` },
   { title: "3. AI-Powered Poster, Flyer and Communication Management", req: "The LMS should include AI-enabled communication capabilities to create awareness and learning campaigns.", lines: `
-x|AI-assisted creation of:|Made with ready templates and your brand kit; AI design pending
->d|Posters
->d|Flyers
->d|Teasers
+x|AI-assisted creation of:|done=All five kinds below are made from ready templates in the company brand|pending=The AI writing the text or designing the layout for you|why=Needs a paid AI service (usage charges), an API key, and approval to send company training content to that service
+>d|Posters|From templates
+>d|Flyers|From templates, A4, PNG or PDF
+>d|Teasers|From templates, wide format for screens
 >d|Educational Communication Materials|Sent as messages with the poster attached
->d|Knowledge Bites
+>d|Knowledge Bites|From templates, square format
 d|Users should be able to provide:
 >d|Topic
 >d|Key Message
 >d|Basic Content
 >d|Branding Guidelines|Brand kit: colours, logo and footer
-x|The AI engine should automatically generate:|The app lays out the design itself; AI-drawn graphics pending
->d|Design Layout|5 templates, text fitted automatically
->p|Graphics|Needs AI; you can add your own picture
->x|Visual Content|Your own picture or the template's shapes
->d|Communication-ready Posters/Flyers|PNG and PDF
+x|The AI engine should automatically generate:|done=The app lays out the text automatically in 5 templates and 4 formats|pending=AI-drawn graphics and AI-made pictures|why=Needs a paid AI service (usage charges), an API key, and approval to send company training content to that service
+>d|Design Layout|5 templates; text fitted automatically so nothing is cut off
+>p|Graphics|pending=Pictures and icons drawn by AI for each topic|why=Needs a paid AI image service. For now, admins can add their own picture
+>x|Visual Content|done=Your own picture, or the template's shapes and colours|pending=Visuals made by AI|why=Needs a paid AI image service
+>d|Communication-ready Posters/Flyers|Download as PNG or PDF, or send as a message
 d|Ability to create distribution groups within the LMS.
 d|Ability to send generated content directly to:
 >d|Employees
@@ -347,45 +348,45 @@ d|Ability to track:
 >d|View Rate
 >d|Engagement Metrics|Link clicks` },
   { title: "4. AI-Based Content-to-Video Conversion", req: "The LMS should support automated conversion of learning content into video-based learning assets.", lines: `
-x|Ability to upload:|Done without AI: slides become narrated video scenes
+x|Ability to upload:|done=Word, PowerPoint and PDF files are uploaded and turned into video scenes|pending=Choosing a file that is already used in a lesson, instead of uploading it again|why=Not built yet. It needs no money, only a little development time
 >d|Word Documents
 >d|PowerPoint Presentations|Speaker notes become the narration
 >d|PDFs
->x|Existing Learning Content|Upload the same file again; picking an existing lesson pending
-x|AI engine should automatically convert content into:|Slide-by-slide videos; AI-written scripts pending
+>x|Existing Learning Content|done=Works with the same files, uploaded again|pending=Picking a file straight from an existing lesson|why=Not built yet; no cost, only development time
+x|AI engine should automatically convert content into:|done=Videos are made automatically, one scene per slide or page, read aloud from the speaker notes or slide text|pending=AI writing a new script, summarising long content, or adding new scenes and graphics|why=Needs a paid AI service (usage charges), an API key, and approval to send company training content to that service
 >d|Training Videos
 >d|Microlearning Videos|Leave out scenes to make a short one
->x|Knowledge Bite Videos|From a short deck; AI summarising pending
-x|Ability to generate:
->x|Professional Voice-over|Free natural voices; studio-quality voices need a paid service
+>x|Knowledge Bite Videos|done=Made from a short deck, or by leaving out scenes|pending=AI picking the key points automatically|why=Needs a paid AI service (usage charges), an API key, and approval to send company training content to that service
+x|Ability to generate:|done=Text-to-speech narration with free natural voices|pending=Studio-quality professional voice-over|why=Needs a paid voice service (charged per minute of audio)
+>x|Professional Voice-over|done=Free natural-sounding voices|pending=Studio-quality voices|why=Needs a paid voice service (charged per minute of audio)
 >d|Text-to-Speech Narration
->d|Multiple Voice Options
+>d|Multiple Voice Options|4 free voices plus the voices built into Windows
 d|Ability to select:
 >d|Language|English and Hindi
->x|Accent|US and UK English; Indian English via Windows voices
->d|Voice Profile|Male and female voices, speed
+>x|Accent|done=American and British English|pending=Indian English and Tamil voices built in|why=The free voice tool has no Indian English or Tamil voice. Indian English can be added free from Windows Settings on the server; Tamil needs a paid voice service
+>d|Voice Profile|Male and female voices; speed can be set
 d|Automatically generate video scenes based on content.|One scene per slide or page
-d|Generated videos should be directly publishable within the LMS.|Published as a video lesson
-d|Ability to edit generated videos before publishing.|Change words, order, leave out scenes` },
+d|Generated videos should be directly publishable within the LMS.|Published as a video lesson in a course
+d|Ability to edit generated videos before publishing.|Change the words, change the order, or leave scenes out` },
   { title: "5. AI-Based Assessment Generation", req: "The LMS should automatically generate assessment questions from uploaded training content.", lines: `
-p|Ability to analyze uploaded:|Planned for the AI phase
->p|Word Documents
->p|PDFs
->p|PowerPoint Presentations
->p|Videos
-p|AI engine should generate assessments automatically.
-x|Supported question formats:|Done for questions written by trainers; AI generation pending
->d|MCQ|Manual
->d|MMCQ|Manual
->d|Match the Following|Manual
->d|True/False|Manual
->d|Scenario-Based Questions|Manual
+p|Ability to analyze uploaded:|pending=AI reading the uploaded files to write questions from them|why=Needs a paid AI service (usage charges), an API key, and approval to send company training content to that service
+>p|Word Documents|pending=AI reading Word files|why=Same reason: paid AI service needed
+>p|PDFs|pending=AI reading PDFs|why=Same reason: paid AI service needed
+>p|PowerPoint Presentations|pending=AI reading slides|why=Same reason: paid AI service needed
+>p|Videos|pending=AI turning speech into text, then writing questions|why=Same reason, plus a speech-to-text service
+p|AI engine should generate assessments automatically.|pending=Questions written by AI|why=Needs a paid AI service (usage charges), an API key, and approval to send company training content to that service
+x|Supported question formats:|done=Trainers can write all these formats today|pending=AI writing them|why=Needs a paid AI service (usage charges), an API key, and approval to send company training content to that service
+>d|MCQ|Written by trainers
+>d|MMCQ|Written by trainers
+>d|Match the Following|Written by trainers
+>d|True/False|Written by trainers
+>d|Scenario-Based Questions|Written by trainers
 d|Ability for trainers to:
 >d|Review Generated Questions|Draft and approve workflow
 >d|Edit Questions
 >d|Approve Questions
 >d|Add Additional Questions
-x|Automatic creation of question banks.|Question banks done; creation by AI pending
+x|Automatic creation of question banks.|done=Question bank: add questions from it to exams, and share exam questions to it|pending=AI filling the bank from training content|why=Needs a paid AI service (usage charges), an API key, and approval to send company training content to that service
 d|Ability to categorize questions based on:
 >d|Difficulty Level
 >d|Topic
@@ -436,13 +437,15 @@ d|Export reports in:
 >d|CSV
 d|Support scheduled report distribution through email.|Sent once company mail settings are entered` },
 ];
+const NOTE_LABEL = { done: "Done:", pending: "Pending:", why: "Why:" };
 const LABEL = { d: ["done", "Done"], p: ["pending", "Pending"], x: ["partly", "Partly done"] };
 const pill = (code, big) => { const s = document.createElement("span"); s.className = `pill ${LABEL[code][0]}${big ? " big" : ""}`; s.textContent = LABEL[code][1]; return s; };
 let areasDone = 0, areasPending = 0, areasPartly = 0;
 REQ.forEach((a) => {
   const rows = a.lines.trim().split("\n").map((l) => {
-    const sub = l.startsWith(">"); const [st, text, note] = l.replace(/^>/, "").split("|");
-    return { sub, st, text, note };
+    const sub = l.startsWith(">"); const [st, text, ...rest] = l.replace(/^>/, "").split("|");
+    const parts = rest.map((r) => { const m = r.match(/^(done|pending|why)=(.*)$/); return m ? { k: m[1], v: m[2] } : { k: "", v: r }; });
+    return { sub, st, text, parts };
   });
   const codes = new Set(rows.map((r) => r.st));
   const overall = codes.size === 1 ? [...codes][0] : codes.has("d") ? "x" : "p";
@@ -457,7 +460,11 @@ REQ.forEach((a) => {
   rows.forEach((r) => {
     const li = document.createElement("li"); if (r.sub) li.className = "sub";
     const t = document.createElement("span"); t.className = "txt"; t.textContent = r.text;
-    if (r.note) { const n = document.createElement("span"); n.className = "note"; n.textContent = r.note; t.appendChild(n); }
+    r.parts.forEach(({ k, v }) => {
+      const n = document.createElement("span"); n.className = "note" + (k ? " " + k : "");
+      if (k) { const b = document.createElement("b"); b.textContent = NOTE_LABEL[k]; n.append(b, " "); }
+      n.append(v); t.appendChild(n);
+    });
     const st = pill(r.st); st.classList.add("st");
     li.append(t, st); ul.appendChild(li);
   });
@@ -465,7 +472,7 @@ REQ.forEach((a) => {
   $("areas").appendChild(det);
 });
 const summary = $("summary");
-[["d", `${areasDone} of 8 areas done`], ["x", `${areasPartly} partly done`], ["p", `${areasPending} pending (AI phase)`]].forEach(([c, t]) => {
+[["d", `${areasDone} of 8 areas done`], ["x", `${areasPartly} partly done`], ["p", `${areasPending} pending`]].filter(([c]) => c === "d" || (c === "x" ? areasPartly : areasPending) > 0).forEach(([c, t]) => {
   const p = pill(c, true); p.textContent = t; summary.appendChild(p);
 });
 // Opening the page at #status jumps to this section.
