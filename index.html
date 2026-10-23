@@ -13,11 +13,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: a "screening room" — one big player on a navy stage, then the shorts as a programme grouped by who uses them. */
+/* Layout: a programme of video cards (full walkthrough first, then shorts by audience); each card opens a screening popup. */
 :root {
   --bg: #f3f6fa; --surface: #ffffff; --ink: #14223a; --muted: #5a6880; --line: #dbe3ee;
   --stage: #0f2747; --stage-ink: #eef3fa; --stage-muted: #a9b8cf;
-  --teal: #0e8f8a; --amber: #e8a317; --chip: #e6f3f2; --chip-ink: #0b6e6a;
+  --teal: #0e8f8a; --amber: #e8a317; --chip: #e6f3f2; --chip-ink: #0b6e6a; --scrim: rgba(6, 12, 24, .78);
   --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
@@ -25,90 +25,84 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0b1424; --surface: #121e33; --ink: #e6ecf6; --muted: #9aa9c2; --line: #24344f;
   --stage: #08111f; --stage-ink: #eef3fa; --stage-muted: #9fb0ca;
-  --teal: #3cc7bf; --amber: #f2b93a; --chip: #123634; --chip-ink: #7fe0d9; color-scheme: dark } }
+  --teal: #3cc7bf; --amber: #f2b93a; --chip: #123634; --chip-ink: #7fe0d9; --scrim: rgba(0, 0, 0, .8); color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0b1424; --surface: #121e33; --ink: #e6ecf6; --muted: #9aa9c2; --line: #24344f;
   --stage: #08111f; --stage-ink: #eef3fa; --stage-muted: #9fb0ca;
-  --teal: #3cc7bf; --amber: #f2b93a; --chip: #123634; --chip-ink: #7fe0d9; color-scheme: dark }
+  --teal: #3cc7bf; --amber: #f2b93a; --chip: #123634; --chip-ink: #7fe0d9; --scrim: rgba(0, 0, 0, .8); color-scheme: dark }
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--f-body) }
 .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -.01em }
-a { color: var(--teal) }
 :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 6px }
 
-/* Stage */
+/* Header */
 .stage { background: var(--stage); color: var(--stage-ink) }
-.stage .wrap { padding-block: 28px 36px; display: grid; gap: 22px }
+.stage .wrap { padding-block: 30px 34px; display: grid; gap: 14px }
 .brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap }
 .brand b { font-family: var(--f-display); font-size: 1.05rem; letter-spacing: .02em }
 .brand span { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--amber) }
-.intro h1 { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.12 }
-.intro p { color: var(--stage-muted); max-width: 64ch; margin: .6rem 0 0 }
-.player { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); gap: 24px; align-items: start }
-.screen { background: #000; border-radius: 12px; overflow: hidden; aspect-ratio: 16 / 9; max-width: 100%; box-shadow: 0 18px 50px rgba(0,0,0,.35) }
-.screen video { width: 100%; height: 100%; display: block; background: #000 }
-.now { display: grid; gap: 10px; min-width: 0 }
-.now .kicker { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--amber) }
-.now h2 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.2 }
-.now dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: .95rem }
-.now dt { color: var(--stage-muted) }
-.now dd { margin: 0 }
-.parts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px }
-.parts-label { align-self: center; font-size: .85rem; color: var(--stage-muted) }
-.parts button { font: 600 .9rem var(--f-body); color: var(--stage-ink); background: transparent; border: 1px solid rgba(255,255,255,.28);
-  border-radius: 999px; padding: 7px 14px; cursor: pointer }
-.parts button[aria-pressed="true"] { background: var(--stage-ink); color: var(--stage); border-color: var(--stage-ink) }
-.share { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .85rem; color: var(--stage-muted) }
-.share button { font: 600 .82rem var(--f-body); background: rgba(255,255,255,.1); color: var(--stage-ink); border: 0; border-radius: 6px; padding: 6px 10px; cursor: pointer }
+.stage h1 { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.12 }
+.stage p { color: var(--stage-muted); max-width: 64ch; margin: 0 }
+.start { justify-self: start; font: 600 1rem var(--f-body); color: var(--stage); background: var(--amber); border: 0; border-radius: 999px;
+  padding: 11px 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px }
+.start::before { content: ""; width: 0; height: 0; border-left: 11px solid currentColor; border-top: 7px solid transparent; border-bottom: 7px solid transparent }
 
 /* Programme */
-main .wrap { padding-block: 36px 56px; display: grid; gap: 40px }
+main .wrap { padding-block: 34px 56px; display: grid; gap: 40px }
 .group { display: grid; gap: 14px }
 .group-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 8px }
 .group-head h2 { font-size: 1.25rem }
 .group-head p { margin: 0; color: var(--muted); font-size: .92rem }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px }
-.card { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line);
+.grid.wide { grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)) }
+.card { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-rows: auto 1fr; gap: 10px; background: var(--surface); border: 1px solid var(--line);
   border-radius: 12px; overflow: hidden; transition: transform .15s ease, border-color .15s ease }
 .card:hover { transform: translateY(-2px); border-color: var(--teal) }
-.card[aria-current="true"] { border-color: var(--amber); box-shadow: 0 0 0 2px var(--amber) }
 .thumb { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: var(--stage) }
 .thumb img { width: 100%; height: 100%; object-fit: cover; display: block }
-.num { position: absolute; left: 10px; top: 10px; font: 500 .72rem var(--f-mono); background: rgba(8,17,31,.82); color: #fff; padding: 3px 7px; border-radius: 5px }
-.dur { position: absolute; right: 10px; bottom: 10px; font: 500 .74rem var(--f-mono); background: rgba(8,17,31,.82); color: #fff; padding: 3px 7px; border-radius: 5px; font-variant-numeric: tabular-nums }
-.card-body { padding: 0 14px 14px; display: grid; gap: 6px }
+.play { position: absolute; inset: 0; margin: auto; width: 54px; height: 54px; border-radius: 50%; background: rgba(8,17,31,.72); display: grid; place-items: center; opacity: .92 }
+.play::after { content: ""; margin-left: 4px; border-left: 16px solid #fff; border-top: 10px solid transparent; border-bottom: 10px solid transparent }
+.card:hover .play { background: var(--amber) }
+.num, .dur { position: absolute; font: 500 .72rem var(--f-mono); background: rgba(8,17,31,.82); color: #fff; padding: 3px 7px; border-radius: 5px }
+.num { left: 10px; top: 10px } .dur { right: 10px; bottom: 10px; font-variant-numeric: tabular-nums }
+.card-body { padding: 0 14px 14px; display: grid; gap: 6px; align-content: start }
 .card h3 { font-size: 1.02rem; line-height: 1.3 }
 .card p { margin: 0; color: var(--muted); font-size: .88rem }
 .who { justify-self: start; font-size: .74rem; font-weight: 600; background: var(--chip); color: var(--chip-ink); padding: 2px 8px; border-radius: 999px }
 footer { color: var(--muted); font-size: .85rem }
-footer .wrap { padding-block: 0 40px; border-top: 1px solid var(--line); padding-top: 18px }
-@media (max-width: 860px) { .player { grid-template-columns: minmax(0, 1fr) } }
+footer .wrap { padding-block: 18px 40px; border-top: 1px solid var(--line) }
+
+/* Popup */
+dialog { width: min(1100px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 0; border-radius: 14px; background: var(--stage); color: var(--stage-ink);
+  box-shadow: 0 30px 80px rgba(0,0,0,.5); overflow: auto }
+dialog::backdrop { background: var(--scrim) }
+.dlg { display: grid; gap: 0 }
+.dlg-top { display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 18px }
+.dlg-top .kicker { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--amber) }
+.dlg-top h2 { font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: 1.25 }
+.dlg-top .titles { display: grid; gap: 2px; min-width: 0; flex: 1 }
+.close { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.1); color: var(--stage-ink); font: 600 1.3rem/1 var(--f-body); cursor: pointer }
+.close:hover { background: rgba(255,255,255,.2) }
+.screen { background: #000; aspect-ratio: 16 / 9; max-width: 100%; max-height: calc(100vh - 220px); margin: 0 auto; width: 100% }
+.screen video { width: 100%; height: 100%; display: block; background: #000 }
+.dlg-info { display: flex; gap: 18px 28px; flex-wrap: wrap; align-items: flex-start; padding: 14px 18px 18px }
+.dlg-info dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: .92rem; flex: 1 1 360px; min-width: 0 }
+.dlg-info dt { color: var(--stage-muted) } .dlg-info dd { margin: 0 }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center }
+.actions button { font: 600 .88rem var(--f-body); color: var(--stage-ink); background: rgba(255,255,255,.1); border: 0; border-radius: 8px; padding: 8px 12px; cursor: pointer }
+.actions button.next { background: var(--amber); color: var(--stage) }
+.actions button:hover { filter: brightness(1.1) }
+#linkbox { flex: 1 1 100%; min-width: 0; font: 500 .8rem var(--f-mono); background: rgba(255,255,255,.08); color: var(--stage-ink); border: 1px solid rgba(255,255,255,.2); border-radius: 6px; padding: 6px 8px }
 @media (prefers-reduced-motion: reduce) { .card { transition: none } .card:hover { transform: none } }
 </style>
 
 <header class="stage">
   <div class="wrap">
     <div class="brand"><b>ASP RCM University</b><span>Walkthrough videos</span></div>
-    <div class="intro">
-      <h1>See the new learning portal in action</h1>
-      <p>Start with the full walkthrough: one new hire, Ravi, goes from his first day to production ready. Then pick any short below to see one feature in about a minute.</p>
-    </div>
-    <div class="player">
-      <div class="screen"><video id="video" controls preload="metadata" playsinline></video></div>
-      <div class="now" aria-live="polite">
-        <div class="kicker" id="kicker">Full walkthrough</div>
-        <h2 id="title">From new hire to production ready</h2>
-        <dl>
-          <dt>Who uses it</dt><dd id="who">Admin, trainer, learner and manager</dd>
-          <dt>Why it matters</dt><dd id="why">One story that shows the whole training journey.</dd>
-          <dt>Length</dt><dd id="len"></dd>
-        </dl>
-        <div class="parts" id="parts" role="group" aria-label="Full walkthrough"><span class="parts-label">Full walkthrough:</span></div>
-        <div class="share"><span>Link to this video:</span><button type="button" id="copy">Copy link</button><span id="copied" hidden>Copied</span>
-          <input id="linkbox" readonly hidden aria-label="Link to this video" style="flex:1 1 100%;min-width:0;font:500 .8rem var(--f-mono);background:rgba(255,255,255,.08);color:var(--stage-ink);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:6px 8px"></div>
-      </div>
-    </div>
+    <h1>See the new learning portal in action</h1>
+    <p>Start with the full walkthrough: one new hire, Ravi, goes from his first day to production ready. Then pick any short below to see one feature in about a minute.</p>
+    <button type="button" class="start" id="start">Watch the full walkthrough</button>
   </div>
 </header>
 
@@ -118,6 +112,29 @@ footer .wrap { padding-block: 0 40px; border-top: 1px solid var(--line); padding
 
 <footer><div class="wrap">Recorded on the ASP RCM University demo system with sample people and courses. AI features are not shown; they are the next phase.</div></footer>
 
+<dialog id="player" aria-labelledby="dlg-title">
+  <div class="dlg">
+    <div class="dlg-top">
+      <div class="titles"><span class="kicker" id="dlg-kicker"></span><h2 id="dlg-title"></h2></div>
+      <button type="button" class="close" id="close" aria-label="Close and stop the video">&times;</button>
+    </div>
+    <div class="screen"><video id="video" controls preload="metadata" playsinline></video></div>
+    <div class="dlg-info">
+      <dl>
+        <dt>Who uses it</dt><dd id="dlg-who"></dd>
+        <dt>Why it matters</dt><dd id="dlg-why"></dd>
+        <dt>Length</dt><dd id="dlg-len"></dd>
+      </dl>
+      <div class="actions">
+        <button type="button" id="copy">Copy link</button>
+        <button type="button" class="next" id="next"></button>
+        <span id="copied" hidden>Copied</span>
+        <input id="linkbox" readonly hidden aria-label="Link to this video">
+      </div>
+    </div>
+  </div>
+</dialog>
+
 <script>
 const WALK = [
   { id: "part-1", file: "videos/walkthrough-part-1.mp4", poster: "posters/walkthrough-part-1.jpg", title: "Part 1 · Setting up Ravi's training",
@@ -126,82 +143,95 @@ const WALK = [
     len: "9:25", who: "Trainer, learner, manager and admin", why: "A classroom session, Ravi learns and passes, his manager signs him off, then records, reports and automation." },
 ];
 const GROUPS = [
-  { name: "Full walkthrough", note: "The whole story in two parts: Ravi from his first day to production ready.", items: ["part-1", "part-2"] },
+  { name: "Full walkthrough", note: "The whole story in two parts: Ravi from his first day to production ready.", items: ["part-1", "part-2"], wide: true },
   { name: "For the training admin", note: "Less manual work: enrolments, renewals and messages run themselves.", items: [2, 3, 4, 5, 12] },
   { name: "Classes and content", note: "Live sessions, lessons made from existing files, and shared exam questions.", items: [1, 9, 13] },
   { name: "Learners and exams", note: "What learners can do themselves, and how exams stay fair.", items: [6, 7, 8] },
   { name: "Managers, reports and access", note: "Who is behind, what the numbers say, and who can see what.", items: [10, 11, 14] },
 ];
 const SHORTS = [{"n": 1, "id": "feature-01", "file": "videos/feature-01.mp4", "poster": "posters/feature-01.jpg", "title": "Online class with a waiting list", "who": "Trainers and learners", "why": "A full class fills itself again when someone cancels, and attending completes the course.", "len": "1:10"}, {"n": 2, "id": "feature-02", "file": "videos/feature-02.mp4", "poster": "posters/feature-02.jpg", "title": "New hires enrolled automatically", "who": "Training admin", "why": "Nobody has to remember to enrol a new joiner. It happens by itself.", "len": "1:25"}, {"n": 3, "id": "feature-03", "file": "videos/feature-03.mp4", "poster": "posters/feature-03.jpg", "title": "Yearly re-training", "who": "Training admin and learners", "why": "Compliance training renews itself every year, and the old result stays on record.", "len": "1:00"}, {"n": 4, "id": "feature-04", "file": "videos/feature-04.mp4", "poster": "posters/feature-04.jpg", "title": "Re-assign a completed course", "who": "Training admin", "why": "When a process changes, people take a course again and their earlier result is kept.", "len": "0:56"}, {"n": 5, "id": "feature-05", "file": "videos/feature-05.mp4", "poster": "posters/feature-05.jpg", "title": "Training plans learners join themselves", "who": "Training admin and learners", "why": "One plan bundles courses and whole paths, and the right people join in one click.", "len": "1:18"}, {"n": 6, "id": "feature-06", "file": "videos/feature-06.mp4", "poster": "posters/feature-06.jpg", "title": "Enrol yourself from the catalog", "who": "Every learner", "why": "People pick up extra training on their own, without asking an admin.", "len": "0:43"}, {"n": 7, "id": "feature-07", "file": "videos/feature-07.mp4", "poster": "posters/feature-07.jpg", "title": "New question types: match and put in order", "who": "Trainers and learners", "why": "Exams test real understanding, not just multiple choice.", "len": "1:53"}, {"n": 8, "id": "feature-08", "file": "videos/feature-08.mp4", "poster": "posters/feature-08.jpg", "title": "Exam safety: auto-save and time-out", "who": "Learners and trainers", "why": "A crash never loses an exam, and the time limit is enforced fairly.", "len": "1:05"}, {"n": 9, "id": "feature-09", "file": "videos/feature-09.mp4", "poster": "posters/feature-09.jpg", "title": "Lesson types: Word, video and listen", "who": "Trainers and learners", "why": "Trainers reuse the files they have; learners never download anything.", "len": "2:08"}, {"n": 10, "id": "feature-10", "file": "videos/feature-10.mp4", "poster": "posters/feature-10.jpg", "title": "Readiness: delayed courses and skill gaps", "who": "Managers and trainers", "why": "See early who is falling behind, and on which topics.", "len": "0:52"}, {"n": 11, "id": "feature-11", "file": "videos/feature-11.mp4", "poster": "posters/feature-11.jpg", "title": "Reports with filters", "who": "Training team and auditors", "why": "Answer questions like how is Team Beta doing this month, in seconds.", "len": "0:53"}, {"n": 12, "id": "feature-12", "file": "videos/feature-12.mp4", "poster": "posters/feature-12.jpg", "title": "Emails and reminder settings", "who": "Training admin", "why": "Every email uses your wording, and reminders follow your rules.", "len": "1:14"}, {"n": 13, "id": "feature-13", "file": "videos/feature-13.mp4", "poster": "posters/feature-13.jpg", "title": "Question bank: pick and share questions", "who": "Trainers", "why": "Good questions are written once and reused in many exams.", "len": "0:57"}, {"n": 14, "id": "feature-14", "file": "videos/feature-14.mp4", "poster": "posters/feature-14.jpg", "title": "Roles and access", "who": "Everyone", "why": "Each person sees only what their role allows; getting in is simple and safe.", "len": "1:26"}];
+// The page's public link; each video adds its own #name.
+const SHARE_BASE = "https://redmouseindia.github.io/asprcm-university-walkthrough/";
 
 const $ = (id) => document.getElementById(id);
-const video = $("video");
 const byId = {};
-WALK.forEach((w) => (byId[w.id] = { ...w, kicker: "Full walkthrough" }));
-SHORTS.forEach((s) => (byId[s.id] = { ...s, kicker: `Feature ${s.n}` }));
+WALK.forEach((w) => (byId[w.id] = { ...w, kicker: "Full walkthrough", label: w.title.split(" · ")[0], heading: w.title.split(" · ")[1] }));
+SHORTS.forEach((s) => (byId[s.id] = { ...s, kicker: `Feature ${s.n}`, label: `Feature ${s.n}`, heading: s.title }));
+const ORDER = GROUPS.flatMap((g) => g.items.map((n) => (typeof n === "string" ? n : `feature-${String(n).padStart(2, "0")}`)));
 
-function select(id, play) {
-  const v = byId[id] || byId["part-1"];
-  video.src = v.file; video.poster = v.poster;
-  $("kicker").textContent = v.kicker; $("title").textContent = v.title;
-  $("who").textContent = v.who; $("why").textContent = v.why; $("len").textContent = v.len;
-  document.querySelectorAll(".card").forEach((c) => c.setAttribute("aria-current", String(c.dataset.id === v.id)));
-  document.querySelectorAll("#parts button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === v.id)));
-  try { history.replaceState(null, "", "#" + v.id); } catch (e) {}
-  current = v.id;
-  if (play) { video.play().catch(() => {}); }
-}
-let current = "part-1";
-
-// Walkthrough part buttons
-WALK.forEach((w) => {
-  const b = document.createElement("button");
-  b.type = "button"; b.dataset.id = w.id; b.textContent = w.title.split(" · ")[0] + " · " + w.len;
-  b.addEventListener("click", () => select(w.id, true));
-  $("parts").appendChild(b);
-});
-// When Part 1 ends, Part 2 is ready to play.
-video.addEventListener("ended", () => { if (current === "part-1") select("part-2", false); });
-
-// Programme of shorts
+// ---- programme of cards
 const prog = $("programme");
 GROUPS.forEach((g) => {
   const sec = document.createElement("section");
   sec.className = "group";
-  sec.innerHTML = `<div class="group-head"><h2></h2><p></p></div><div class="grid"></div>`;
+  sec.innerHTML = `<div class="group-head"><h2></h2><p></p></div><div class="grid${g.wide ? " wide" : ""}"></div>`;
   sec.querySelector("h2").textContent = g.name; sec.querySelector("p").textContent = g.note;
   const grid = sec.querySelector(".grid");
   g.items.forEach((n) => {
-    const s = typeof n === "string" ? byId[n] : SHORTS.find((x) => x.n === n);
+    const v = byId[typeof n === "string" ? n : `feature-${String(n).padStart(2, "0")}`];
     const c = document.createElement("button");
-    c.type = "button"; c.className = "card"; c.dataset.id = s.id;
-    c.innerHTML = `<div class="thumb"><img alt="" loading="lazy"><span class="num"></span><span class="dur"></span></div>
+    c.type = "button"; c.className = "card"; c.dataset.id = v.id;
+    c.setAttribute("aria-label", `Play ${v.label}: ${v.heading}, ${v.len}`);
+    c.innerHTML = `<div class="thumb"><img alt="" loading="lazy"><span class="play"></span><span class="num"></span><span class="dur"></span></div>
       <div class="card-body"><h3></h3><p></p><span class="who"></span></div>`;
-    c.querySelector("img").src = s.poster;
-    c.querySelector(".num").textContent = s.n ? "Feature " + s.n : s.title.split(" · ")[0];
-    c.querySelector(".dur").textContent = s.len;
-    c.querySelector("h3").textContent = s.n ? s.title : s.title.split(" · ")[1];
-    c.querySelector("p").textContent = s.why;
-    c.querySelector(".who").textContent = s.who;
-    c.addEventListener("click", () => { select(s.id, true); window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); });
+    c.querySelector("img").src = v.poster;
+    c.querySelector(".num").textContent = v.label;
+    c.querySelector(".dur").textContent = v.len;
+    c.querySelector("h3").textContent = v.heading;
+    c.querySelector("p").textContent = v.why;
+    c.querySelector(".who").textContent = v.who;
+    c.addEventListener("click", () => openVideo(v.id, true));
     grid.appendChild(c);
   });
   prog.appendChild(sec);
 });
+$("start").addEventListener("click", () => openVideo("part-1", true));
 
-// The page's public link (filled in after publishing); each video adds its own #name.
-const SHARE_BASE = "https://redmouseindia.github.io/asprcm-university-walkthrough/";
+// ---- popup player
+const dlg = $("player"), video = $("video");
+let current = null;
+
+function openVideo(id, play) {
+  const v = byId[id]; if (!v) return;
+  current = id;
+  video.src = v.file; video.poster = v.poster;
+  $("dlg-kicker").textContent = v.kicker; $("dlg-title").textContent = v.heading;
+  $("dlg-who").textContent = v.who; $("dlg-why").textContent = v.why; $("dlg-len").textContent = v.len;
+  const i = ORDER.indexOf(id), nextId = ORDER[i + 1];
+  $("next").hidden = !nextId;
+  if (nextId) { $("next").textContent = `Next: ${byId[nextId].heading} →`; $("next").dataset.id = nextId; }
+  $("linkbox").hidden = true; $("copied").hidden = true;
+  if (!dlg.open) dlg.showModal();
+  try { history.replaceState(null, "", "#" + id); } catch (e) {}
+  if (play) video.play().catch(() => {});
+}
+
+function closeVideo() {
+  video.pause(); video.removeAttribute("src"); video.load();   // fully stops the video and its sound
+  if (dlg.open) dlg.close();
+  current = null;
+  try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+}
+
+$("close").addEventListener("click", closeVideo);
+dlg.addEventListener("cancel", (e) => { e.preventDefault(); closeVideo(); });          // Esc key
+dlg.addEventListener("click", (e) => { if (e.target === dlg) closeVideo(); });         // click outside the popup
+$("next").addEventListener("click", () => openVideo($("next").dataset.id, true));
+video.addEventListener("ended", () => { if (!$("next").hidden) $("next").focus(); });
+document.addEventListener("visibilitychange", () => { if (document.hidden && dlg.open) video.pause(); });
+
 $("copy").addEventListener("click", () => {
   const url = SHARE_BASE + "#" + current;
   const box = $("linkbox");
   box.value = url; box.hidden = false;
   const done = () => { $("copied").hidden = false; setTimeout(() => ($("copied").hidden = true), 1800); };
-  try {
-    navigator.clipboard.writeText(url).then(done).catch(() => { box.focus(); box.select(); });
-  } catch (e) { box.focus(); box.select(); }
+  try { navigator.clipboard.writeText(url).then(done).catch(() => { box.focus(); box.select(); }); }
+  catch (e) { box.focus(); box.select(); }
 });
 
-select((location.hash || "").slice(1) || "part-1", false);
+// A link to one video opens its popup, ready to play.
+const want = (location.hash || "").slice(1);
+if (byId[want]) openVideo(want, false);
 </script>
 
 </body>
