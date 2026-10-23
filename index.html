@@ -119,9 +119,9 @@ dialog::backdrop { background: var(--scrim) }
 .area-body .req { margin: 0; color: var(--muted); font-size: .92rem }
 .lines { list-style: none; margin: 0; padding: 0; display: grid }
 .lines li { display: flex; gap: 12px; justify-content: space-between; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); font-size: .94rem }
-.lines li.sub { padding-left: 22px; color: var(--ink) }
-.lines li.sub::before { content: "–"; color: var(--muted); margin-left: -14px; margin-right: 6px }
-.lines .txt { min-width: 0 }
+.lines li.sub { padding-left: 22px }
+.lines li.sub .txt::before { content: "–"; color: var(--muted); margin-left: -14px; margin-right: 6px }
+.lines .txt { flex: 1 1 auto; min-width: 0 }
 .lines .note { display: block; color: var(--muted); font-size: .82rem }
 .lines .st { flex: none }
 .email-note { margin: 0; color: var(--muted); font-size: .88rem }
