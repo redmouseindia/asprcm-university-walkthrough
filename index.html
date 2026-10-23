@@ -126,6 +126,9 @@ dialog::backdrop { background: var(--scrim) }
 .lines .note b { font-weight: 700 } .lines .note.done b { color: var(--ok) } .lines .note.pending b { color: var(--pend) } .lines .note.why b { color: var(--ink) }
 .lines .st { flex: none }
 .email-note { margin: 0; color: var(--muted); font-size: .88rem }
+.lines .note.watch { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px }
+.lines .note.watch button { font: 600 .78rem var(--f-body); color: var(--teal); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer }
+.lines .note.watch button:hover { border-color: var(--teal) }
 .need-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 14px }
 .need { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 8px; align-content: start }
 .need-top { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; flex-wrap: wrap }
@@ -180,10 +183,11 @@ dialog::backdrop { background: var(--scrim) }
   <div class="wrap">
     <div class="status-head">
       <h2 id="status-title">Requirements status</h2>
-      <p>Each line of the LMS requirements, with what is done and what is pending. Every line marked Partly done or Pending says what is still pending and why. Open an area to see its lines.</p>
+      <p>Each line of the LMS requirements, with what is done and what is pending. Every line marked Partly done or Pending says what is still pending and why. The last block lists the main features the app has beyond these requirements. Open an area to see its lines.</p>
       <div class="summary" id="summary"></div>
     </div>
     <div id="areas" style="display:grid;gap:12px"></div>
+    <div id="extra" style="display:grid;gap:12px"></div>
     <p class="email-note">Emails (notifications, reminders, scheduled reports) are created and listed in the system now; they are delivered once the company's Microsoft 365 or SMTP mail settings are entered.</p>
   </div>
 </section>
@@ -630,10 +634,52 @@ REQ.forEach((a) => {
   body.append(req, ul); det.append(sum, body);
   $("areas").appendChild(det);
 });
+// ---- main modules the app has beyond Vikas's requirements, with their status and videos.
+const EXTRA = [
+  { name: "Classroom and online sessions", what: "Schedule classes, learners book seats, waiting lists refill themselves, attendance completes the course.", shorts: [1] },
+  { name: "Automatic enrolment and renewals", what: "Rules give courses to the right people (for example new hires on day one); compliance courses reopen every year; completed courses can be re-assigned.", shorts: [2, 3, 4] },
+  { name: "Self-service learning", what: "Learners enrol themselves from the catalog and join training plans.", shorts: [5, 6] },
+  { name: "SCORM courses", what: "Ready-made courses from tools like Storyline or Captivate run in the LMS, resume where learners left off, and count towards records.", note: "SCORM 2004 sequencing rules are not enforced; authoring tools rarely use them.", shorts: [19] },
+  { name: "Certificates", what: "Issued automatically on completion, expire on time, and anyone can check one is genuine online.", shorts: [20] },
+  { name: "Compliance and audit", what: "Overdue training with one-click reminders, certificates about to expire, auditor reviews with verdicts.", shorts: [14, 21] },
+  { name: "Emails and automation", what: "Your own wording for every email, reminder rules, and nightly automatic jobs.", note: "Emails are delivered once the company mail settings are entered.", shorts: [12] },
+  { name: "Practice tools", what: "Hands-on practice for claims, denials, coding and calls, with instant feedback and a leaderboard.", note: "Practice questions should be reviewed by the coding and billing team.", shorts: [25] },
+];
+{
+  const det = document.createElement("details"); det.className = "area";
+  const sum = document.createElement("summary");
+  const h = document.createElement("h3"); h.textContent = "Other features (beyond Vikas's requirements)";
+  sum.append(h, pill("d"));
+  const body = document.createElement("div"); body.className = "area-body";
+  const req = document.createElement("p"); req.className = "req";
+  req.textContent = "Main modules the app has that were not in the requirement list. Each one has a short video.";
+  const ul = document.createElement("ul"); ul.className = "lines";
+  EXTRA.forEach((x) => {
+    const li = document.createElement("li");
+    const t = document.createElement("span"); t.className = "txt";
+    const b = document.createElement("b"); b.textContent = x.name; t.appendChild(b);
+    const w = document.createElement("span"); w.className = "note"; w.textContent = x.what; t.appendChild(w);
+    if (x.note) { const n = document.createElement("span"); n.className = "note"; n.textContent = "Note: " + x.note; t.appendChild(n); }
+    const links = document.createElement("span"); links.className = "note watch";
+    x.shorts.forEach((n) => {
+      const id = `feature-${String(n).padStart(2, "0")}`;
+      if (!byId[id]) return;
+      const a = document.createElement("button"); a.type = "button"; a.textContent = `Watch feature ${n}`;
+      a.addEventListener("click", () => openVideo(id, true)); links.appendChild(a);
+    });
+    if (links.childNodes.length) t.appendChild(links);
+    const st = pill("d"); st.classList.add("st");
+    li.append(t, st); ul.appendChild(li);
+  });
+  body.append(req, ul); det.append(sum, body);
+  $("extra").appendChild(det);
+}
+
 const summary = $("summary");
 [["d", `${areasDone} of 8 areas done`], ["x", `${areasPartly} partly done`], ["p", `${areasPending} pending`]].filter(([c]) => c === "d" || (c === "x" ? areasPartly : areasPending) > 0).forEach(([c, t]) => {
   const p = pill(c, true); p.textContent = t; summary.appendChild(p);
 });
+{ const p = pill("d", true); p.textContent = `+ ${EXTRA.length} extra modules done`; summary.appendChild(p); }
 // Opening the page at #status jumps to this section.
 if (location.hash === "#status") setTimeout(() => $("status").scrollIntoView(), 50);
 
