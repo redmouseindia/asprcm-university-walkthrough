@@ -477,7 +477,7 @@ d|Ability to create and configure multiple question types, including:
 >d|Scenario-Based Questions (Optional)
 d|Ability to define:
 >d|Passing Scores
->d|Assessment Attempts
+>d|Assessment Attempts|Set per course: whether learners who fail may try again, and how many days they wait first
 >d|Time Limits
 >d|Randomized Questions
 d|Automatic scoring and result generation.
@@ -584,7 +584,7 @@ d|Ability to identify:
 >d|Skill Gaps
 d|Ability to generate readiness and ramp reports.` },
   { title: "8. Reporting and Analytics", req: "The LMS should provide comprehensive reporting capabilities.", lines: `
-d|Real-time dashboards.
+d|Real-time dashboards.|Also a live data feed that Power BI or Excel dashboards refresh from by themselves
 d|Standard reports:
 >d|Training Completion Report
 >d|Assessment Score Report
@@ -643,6 +643,7 @@ const EXTRA = [
   { name: "Certificates", what: "Issued automatically on completion, expire on time, and anyone can check one is genuine online.", shorts: [20] },
   { name: "Compliance and audit", what: "Overdue training with one-click reminders, certificates about to expire, auditor reviews with verdicts.", shorts: [14, 21] },
   { name: "Emails and automation", what: "Your own wording for every email, reminder rules, and nightly automatic jobs.", note: "Emails are delivered once the company mail settings are entered.", shorts: [12] },
+  { name: "Admin tools", what: "Course rules (yearly renewal, exam retakes and the wait before them), a live data feed for Power BI or Excel, an org chart built from who reports to whom, job titles, and role or status changes for many people at once.", shorts: [26] },
   { name: "Practice tools", what: "Hands-on practice for claims, denials, coding and calls, with instant feedback and a leaderboard.", note: "Practice questions should be reviewed by the coding and billing team.", shorts: [25] },
 ];
 {
