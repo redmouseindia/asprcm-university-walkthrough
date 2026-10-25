@@ -111,6 +111,13 @@ dialog::backdrop { background: var(--scrim) }
 .logins tr:last-child td { border-bottom: 0 }
 .logins th { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted) }
 .logins code { font-size: .95rem; font-weight: 600 }
+.to-top { position: fixed; right: 18px; bottom: 18px; z-index: 50; display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 16px; border-radius: 999px; border: 0; background: var(--teal); color: #fff; font: inherit; font-weight: 700;
+  font-size: .9rem; box-shadow: 0 6px 20px rgba(0,0,0,.25); cursor: pointer; opacity: 0; transform: translateY(12px);
+  pointer-events: none; transition: opacity .2s, transform .2s }
+.to-top.show { opacity: 1; transform: none; pointer-events: auto }
+.to-top:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px }
+@media (prefers-reduced-motion: reduce) { .to-top { transition: none } }
 .status .wrap { padding-block: 8px 48px; display: grid; gap: 16px }
 .status-head { display: grid; gap: 6px; border-bottom: 1px solid var(--line); padding-bottom: 10px }
 .status-head h2 { font-size: 1.5rem }
@@ -189,6 +196,19 @@ dialog::backdrop { background: var(--scrim) }
 <main>
   <div class="wrap" id="programme"></div>
 </main>
+<button type="button" class="to-top" id="to-top" aria-label="Back to top">&uarr; Top</button>
+<script>
+(() => {
+  const b = document.getElementById("to-top");
+  const sync = () => b.classList.toggle("show", window.scrollY > 600);
+  addEventListener("scroll", sync, { passive: true }); sync();
+  b.addEventListener("click", () => {
+    const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+    document.getElementById("start")?.focus({ preventScroll: true });
+  });
+})();
+</script>
 
 <section class="logins" id="logins" aria-labelledby="logins-title">
   <div class="wrap">
