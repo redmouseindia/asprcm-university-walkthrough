@@ -101,6 +101,16 @@ dialog::backdrop { background: var(--scrim) }
 .links { display: flex; gap: 10px; flex-wrap: wrap }
 .ghost { font: 600 1rem var(--f-body); color: var(--stage-ink); background: transparent; border: 1px solid rgba(255,255,255,.35); border-radius: 999px;
   padding: 10px 18px; text-decoration: none; display: inline-flex; align-items: center }
+.logins .wrap { padding-block: 8px 32px; display: grid; gap: 12px }
+.logins h2 { font-size: 1.5rem; margin: 0 }
+.logins p { margin: 0; color: var(--muted); max-width: 70ch }
+.logins .test-tag { display: inline-block; background: var(--chip); color: var(--chip-ink); font-weight: 700; font-size: .8rem; padding: 2px 10px; border-radius: 999px }
+.logins .tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px }
+.logins table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: .95rem }
+.logins th, .logins td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line) }
+.logins tr:last-child td { border-bottom: 0 }
+.logins th { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted) }
+.logins code { font-size: .95rem; font-weight: 600 }
 .status .wrap { padding-block: 8px 48px; display: grid; gap: 16px }
 .status-head { display: grid; gap: 6px; border-bottom: 1px solid var(--line); padding-bottom: 10px }
 .status-head h2 { font-size: 1.5rem }
@@ -169,6 +179,7 @@ dialog::backdrop { background: var(--scrim) }
     <p>Start with a new hire's journey: Ravi goes from his first day to production ready. Then pick any short below to see one feature in about a minute.</p>
     <div class="links">
       <button type="button" class="start" id="start">Watch a new hire's journey</button>
+      <a class="ghost" href="#logins">Test logins</a>
       <a class="ghost" href="#status">What's done and pending</a>
       <a class="ghost" href="#needed">What's needed to finish</a>
     </div>
@@ -178,6 +189,25 @@ dialog::backdrop { background: var(--scrim) }
 <main>
   <div class="wrap" id="programme"></div>
 </main>
+
+<section class="logins" id="logins" aria-labelledby="logins-title">
+  <div class="wrap">
+    <h2 id="logins-title">Test logins <span class="test-tag">Testing only</span></h2>
+    <p>Sample accounts on the demo system (the portal at http://localhost:3000 on the demo machine). Every account uses the same test password. These are test accounts with sample data, not real people.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Role</th><th>Email</th><th>Password</th><th>What they see</th></tr></thead>
+        <tbody>
+          <tr><td>Super admin</td><td><code>superadmin@asprcm.com</code></td><td><code>temp@123</code></td><td>Everything: people, courses, reports, settings</td></tr>
+          <tr><td>Manager</td><td><code>mona.manager@asprcm.com</code></td><td><code>temp@123</code></td><td>Team dashboard, readiness, sign-offs</td></tr>
+          <tr><td>Trainer</td><td><code>tara.trainer@asprcm.com</code></td><td><code>temp@123</code></td><td>Classroom sessions, grading, question bank</td></tr>
+          <tr><td>Learner</td><td><code>lena.learner@asprcm.com</code></td><td><code>temp@123</code></td><td>My learning, exams, certificates</td></tr>
+          <tr><td>Learner</td><td><code>priya.test@asprcm.com</code></td><td><code>temp@123</code></td><td>A second learner, in another team</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
 <section class="status" id="status" aria-labelledby="status-title">
   <div class="wrap">
